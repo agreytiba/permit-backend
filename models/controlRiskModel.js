@@ -8,7 +8,7 @@ const controlRiskSchema = mongoose.Schema(
             ref: 'User'
         },
 		isoServices:[],
-		safetyImplication: {
+		safetyResults: {
 			type: Boolean,
 			required: [ true, 'please add a  safety implication' ]
 		},
@@ -16,10 +16,10 @@ const controlRiskSchema = mongoose.Schema(
 			type: Boolean,
 			required: [ true, 'please add lock off' ]
 		},
-		signsPosted: {
+		postedSigns: {
 			type: Boolean,
 			required: [ true, 'please add waring post' ],
-			unique: true
+			
 		},
 		airMonitoring:{
 			type: Boolean,
@@ -31,6 +31,12 @@ const controlRiskSchema = mongoose.Schema(
         },
 		signatureId: {
 			type: String,
+		},
+		name: {
+			type:String,
+		},
+		dept: {
+			type:String,
 		}
 	},
 	{

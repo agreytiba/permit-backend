@@ -25,7 +25,7 @@ const userSchema = mongoose.Schema(
 		},
 		userType: {
 			type: String,
-			required: [ true, 'please add  type' ]
+			default:"user",
 		},
 	  profilePic: {
       type: String,

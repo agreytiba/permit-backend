@@ -15,14 +15,17 @@ const getSafetys =asyncHandler( async(req,res)=>{
 // @route POST /api/safety
 // @access private
 const setSafety =asyncHandler(  async(req,res)=>{
+
     const data = req.body
-    if (!data) {
-        res.status(400)
-        throw new Error('no data please fill the form')
+ 
+    if (data) {
+       const safety = await Safety.create(data)
+       res.status(200).json(safety)
     }
-    const safety = await Safety.create(data)
-    res.status(200).json(safety)
-}
+    else{
+      res.status(400)
+      throw new Error('no data please fill the form')
+}}
 )
 // @desc update safety
 // @route PUT /api/safety/:id

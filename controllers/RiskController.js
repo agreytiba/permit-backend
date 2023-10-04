@@ -16,12 +16,14 @@ const getControlRisks =asyncHandler( async(req,res)=>{
 // @access private
 const setControlRisk =asyncHandler(  async(req,res)=>{
     const data = req.body
-    if (!data) {
-        res.status(400)
-        throw new Error('no data please fill the form')
-    }
-    const risk = await Risk.create(data)
+
+    if (data) {
+        
+        const risk = await Risk.create(data)
     res.status(200).json(risk)
+    }
+    res.status(400)
+    throw new Error('no data please fill the form')
 }
 )
 // @desc update risk

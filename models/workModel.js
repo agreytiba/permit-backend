@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const workSchema = mongoose.Schema(
     {
-          user:{
+        user:{
             type: mongoose.Schema.Types.ObjectId, 
             required: true,
             ref: 'User'
@@ -15,7 +15,7 @@ const workSchema = mongoose.Schema(
 			type: String,
 			required: [ true, 'please add a contact name' ]
 		},
-		contanctPhone: {
+		contactPhone: {
 			type: String,
 			required: [ true, 'please add a phone number' ]
 		},
@@ -30,15 +30,16 @@ const workSchema = mongoose.Schema(
         },
         startTime: {
            type: String,
-			required: [ true, 'please add  start time' ] 
-        },
+			required: [ true, 'please add  starting time' ] 
+		},
+	
 		endDate: {
 			type: String,
-			required: [ true, 'please add  end date' ]
+			required: [ true, 'please add  ending date' ]
 		},
 		endTime: {
 			type: String,
-			required: [ true, 'please add  end time' ]
+			required: [ true, 'please add  ending time' ]
 		},
 		
 	},

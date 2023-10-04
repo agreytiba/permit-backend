@@ -23,8 +23,8 @@ const getUsers = asyncHandler(async (req, res) => {
 // @access private
 
 const registerUser = asyncHandler(async (req, res) => {
-	const { firstName,lastName,projectId, email, password, userType, phoneNumber, profilePic } = req.body;
-	if (!firstName || !lastName|| !projectId || !email || !phoneNumber || !password || !userType) {
+	const { firstName,lastName,projectId, email, password, phoneNumber,userType} = req.body;
+	if (!firstName || !lastName|| !projectId || !email || !phoneNumber || !password) {
 		res.status(400);
 		throw new Error('please add all fields');
 	}
@@ -34,7 +34,7 @@ const registerUser = asyncHandler(async (req, res) => {
 	const userExists = await User.findOne({ email });
 	if (userExists) {
 		res.status(400);
-		throw new Error('email yako imeshatumika , login au tumia email nyingine kujisajiri');
+		throw new Error('email already used please use another email');
 	}
 	// Hash password
 	const salt = await bcrypt.genSalt(10);
@@ -48,13 +48,11 @@ const registerUser = asyncHandler(async (req, res) => {
 		email,
 		phoneNumber,
 		userType,
-		profilePic,
+		
 		password: hashedPassword
 	});
 	if (user) {
-		res.status(201).json({
-			message:"succeful register"
-		});
+		res.status(201).json("successfull registered");
 	} else {
 		res.status(400);
 		throw new Error('invalid user data');
@@ -130,7 +128,7 @@ const deleteUser = asyncHandler( async(req,res)=>{
     await User.findOneAndDelete(req.params.id)
     res.status(200).json("successfully deleted")
 })
-
+//   add logout from the system
 // Generate JWT
 const generateToken = (id) => {
 	return jwt.sign({ id }, process.env.JWT_SECRET, {
