@@ -2,27 +2,31 @@ const mongoose = require('mongoose');
 
 const permitSchema = mongoose.Schema(
   {
-          user:{
-            type: mongoose.Schema.Types.ObjectId, 
-            required: true,
-            ref: 'user'
-        },
-          work:{
-            type: mongoose.Schema.Types.ObjectId, 
-            required: true,
-            ref: 'Work'
-        },
-          safety:{
-            type: mongoose.Schema.Types.ObjectId, 
-            required: true,
-            ref: 'Safety'
-        },
-          risk:{
-            type: mongoose.Schema.Types.ObjectId, 
-            required: true,
-            ref: 'Risk'
-        },
-
+    user: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: true,
+      ref: 'user'
+    },
+    permitStatus:{ type: String,required:true,default:'Received'},
+    work: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: true,
+      ref: 'Work'
+    },
+    safety: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: true,
+      ref: 'Safety'
+    },
+   
+    risk: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: true,
+      ref: 'Risk'
+    },
+    
+    review: [],
+    approve: []
 	},
 	{
 		timestamps: true

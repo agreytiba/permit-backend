@@ -102,4 +102,40 @@ const deletePermit = asyncHandler( async(req,res)=>{
    await Permit.findByIdAndDelete(req.params.id);
     res.status(200).json({id: req.params.id})
 })
-module.exports ={getPermits,setPermit,updatePermit,deletePermit,getPermit}
+
+// review update
+
+
+// Define a route to update the permitStatus and add to the review array
+ const updatePermitReview = asyncHandler(async (req, res) => {
+  try {
+    const permitId = req.body.permitId;
+    const newStatus = req.body.permitStatus;
+    const reviewBy = req.body.reviewBy;
+    const reviewTime = req.body.reviewTime;
+    const reviewDate = req.body.reviewDate;
+console.log(req.body);
+    // Find the permit by its ID
+    const permit = await Permit.findById(permitId);
+
+    if (!permit) {
+      return res.status(404).json({ message: 'Permit not found' });
+    }
+
+    // Update the permitStatus
+    permit.permitStatus = newStatus;
+
+    // Add the reviewBy and reviewTime objects to the review array
+    permit.review.push({ reviewBy, reviewTime,reviewDate });
+
+    // Save the updated permit
+    const newPermit = await permit.save();
+
+    res.json(newPermit);
+  } catch (error) {
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+
+module.exports ={getPermits,setPermit,updatePermit,deletePermit,getPermit,updatePermitReview}

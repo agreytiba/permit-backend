@@ -22,6 +22,8 @@ app.use("/api/works", require("./routes/workRoutes"));
 app.use("/api/safety", require("./routes/safetyRoutes"));
 app.use("/api/risks", require("./routes/riskRoute"));
 app.use("/api/permits", require("./routes/permitRoutes"));
+app.use("/api/reviews", require("./routes/reviewRoutes"));
+app.use("/api/approves", require("./routes/approveRoutes"));
 
 const Signature = require('./models/signatureModel');
 const multer = require('multer');
