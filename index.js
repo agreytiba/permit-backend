@@ -1,9 +1,13 @@
 const express = require("express");
+
 const dotenv = require("dotenv").config();
 const colors = require("colors");
 const connectDB = require("./config/db");
 const cors = require("cors");
 const { errorHandler } = require("./middleware/errorMiddleware");
+const PDF = require("./models/FilesModel");
+const fs = require("fs");
+const path = require("path");
 const port = process.env.PORT || 5000;
 const app = express();
 app.use(cors());
@@ -24,12 +28,13 @@ app.use("/api/risks", require("./routes/riskRoute"));
 app.use("/api/permits", require("./routes/permitRoutes"));
 app.use("/api/reviews", require("./routes/reviewRoutes"));
 app.use("/api/approves", require("./routes/approveRoutes"));
+app.use("/api/createuser", require("./routes/createUserRoutes"));
 
 const Signature = require('./models/signatureModel');
 const multer = require('multer');
 const { protect } = require('./middleware/authMiddleware')
 
-app.post('/signatures',protect, async (req, res) => {
+app.post('/api/signatures',protect, async (req, res) => {
   try {
     // Assuming you have access to the user's ID (replace 'userIdValue' with the actual user ID)
     const user = req.user;
@@ -60,7 +65,7 @@ app.post('/signatures',protect, async (req, res) => {
 // get signature
 
 // Define a route to get a signature by its ID
-app.get('/signatures/:id',protect, async (req, res) => {
+app.get('/api/signatures/:id',protect, async (req, res) => {
   try {
     
  const userId = req.params.id;
@@ -83,12 +88,12 @@ app.get('/signatures/:id',protect, async (req, res) => {
 
 
 // Update the signature data for a specific user
-app.put('signatures/:id',protect, async (req, res) => {
+app.put('api/signatures/:id',protect, async (req, res) => {
   try {
     const userId = req.params.id;
     const { signatureData } = req.body;
-    console.log(req.body);
-    console.log(userId);
+  
+
 
     // Find the user's signature by user ID
     const signature = await Signature.findOne({ user: userId });
@@ -108,7 +113,72 @@ app.put('signatures/:id',protect, async (req, res) => {
   }
 });
 
+// upload files
+// START OF UPLOAD  PDF TO THE  DATABASE
+// Configure Multer for file uploads
+const upload = multer();
 
+// API endpoint to receive and save multiple PDF files
+app.post("/api/upload-pdf", upload.array("pdf", 10), async (req, res) => {
+  try {
+    const pdfFiles = req.files.map((file) => ({
+      filename: file.originalname,
+      data: file.buffer,
+    }));
 
+    const filesuploaded = await PDF.insertMany(pdfFiles);
 
+    res.status(201).json( filesuploaded);
+  } catch (error) {
+    console.error("Error uploading PDFs:", error);
+    res.status(500).json({ error: "Failed to upload the PDFs" });
+  }
+});
+// END OF UPLOAD TO DATABASE
+
+// get pdf
+app.get("api/upload-pdf", async (req, res) => {
+  try {
+    // get maps with specefic id
+    const { pdfId } = req.query;
+    if (pdfId) {
+      if (!pdfId) {
+        return res.status(400).json({ error: "Missing pdfId parameter" });
+      }
+
+      const pdf = await PDF.findById(pdfId, "filename");
+      res.json(pdf);
+    } else {
+      //  fetch all PDFs
+      const allPDFs = await PDF.find({}, "filename");
+      res.json(allPDFs);
+    }
+  } catch (error) {
+    console.error("Error fetching PDFs:", error);
+    res.status(500).json({ error: "Failed to fetch PDFs" });
+  }
+});
+
+// API endpoint to get a single PDF file by ID
+app.get("/api/get-pdf/:id", async (req, res) => {
+  try {
+    const pdf = await PDF.findById(req.params.id);
+
+    if (!pdf) {
+      return res.status(404).json({ error: "PDF not found" });
+    }
+
+    res.setHeader(
+      "Content-Disposition",
+      `attachment; filename=${pdf.filename}`
+    );
+    res.setHeader("Content-Type", "application/pdf");
+    res.send(pdf.data);
+  } catch (error) {
+    console.error("Error getting PDF:", error);
+    res.status(500).json({ error: "Failed to get the PDF" });
+  }
+});
+
+app.use(errorHandler);
 app.listen(port, () => console.log(`server running in port number ${port}`));

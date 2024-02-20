@@ -24,7 +24,7 @@ const permitSchema = mongoose.Schema(
       required: true,
       ref: 'Risk'
     },
-    
+    attachments: [],
     review: [],
     approve: []
 	},

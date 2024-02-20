@@ -14,6 +14,11 @@ const getPermits = asyncHandler(async (req, res) => {
   res.status(200).json(permits);
 });
 
+
+// Generate a random 6-digit number
+function generateRandomNumber() {
+  return Math.floor(100000 + Math.random() * 900000);
+}
 // @route PUT /api/permit/:id
 // @access private
 const updatePermit = asyncHandler(async (req, res) => {
@@ -30,15 +35,18 @@ const updatePermit = asyncHandler(async (req, res) => {
     if (!permit) {
       return res.status(404).json({ message: "Permit not found" });
     }
-
+    // generate permit number
+    const random6DigitNumber = generateRandomNumber();
+    const permitNumber =`PR${random6DigitNumber}`
     // Update the permitStatus
       permit.permitStatus = newStatus;
     //   check if failReasons is not equal to null
     if (failedReasons) {
-      permit.approve.push({ approvedBy, approveTime, approveDate, failedReasons });
+      permit.approve.push({ approvedBy, approveTime, approveDate,permitNumber, failedReasons });
     }
     // Add the approvedBy and approveTime objects to the review array
- permit.approve.push({ approvedBy, approveTime, approveDate});
+ 
+    permit.approve.push({ approvedBy, approveTime, approveDate, permitNumber });
     // Save the updated permit
     const newPermit = await permit.save();
 

@@ -12,7 +12,7 @@ const userSchema = mongoose.Schema(
 		},
 		projectId: {
 			type: String,
-			required: [ true, 'please add a last name' ]
+		
 		},
 		email: {
 			type: String,
@@ -27,9 +27,12 @@ const userSchema = mongoose.Schema(
 			type: String,
 			default:"user",
 		},
-	  profilePic: {
-      type: String,
-      default: "",
+		isVerified: { type: Boolean, default: false },
+		 
+        verificationToken:{type: String,required:[true]},
+	    profilePic: {
+        type: String,
+        default: "",
     },
 
 		password: {
