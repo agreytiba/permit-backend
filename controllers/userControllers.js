@@ -109,8 +109,8 @@ const verifyToken = asyncHandler(async (req, res) => {
     }
 
     user.isVerified = true;
-    await user.save();
-
+	  const response = await user.save();
+	  res.status(200).json(response.data)
     // Redirect the user to a verification success page
     res.redirect('http://your-frontend-app.com/verification-success');
   } catch (error) {
@@ -131,7 +131,7 @@ const loginUser = asyncHandler(async (req, res) => {
 
 	//  compare between added password and password stored in database
 	if (user && (await bcrypt.compare(password, user.password))) {
-		res.json({
+		res.status(200).json({
 			_id: user.id,
 			firstName: user.firstName,
 			lastName: user.lastName,
@@ -163,7 +163,7 @@ const updateUser = asyncHandler(async (req, res) => {
   try {
     // Find the user by ID and update only the allowed fields
     const updatedUser = await User.findByIdAndUpdate(id, { $set: allowedFields }, { new: true });
-    res.json(updatedUser);
+    res.status(200).json(updatedUser);
   } catch (error) {
     res.status(500).json({ error: 'Unable to update the user.' });
   }
