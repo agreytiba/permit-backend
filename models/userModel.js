@@ -29,7 +29,7 @@ const userSchema = mongoose.Schema(
 		},
 		isVerified: { type: Boolean, default: false },
 		 
-        verificationToken:{type: String,required:[true]},
+        verificationToken:{type: String},
 	    profilePic: {
         type: String,
         default: "",

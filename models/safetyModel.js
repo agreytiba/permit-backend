@@ -7,27 +7,15 @@ const safetySchema = mongoose.Schema(
             required: true,
             ref: 'User'
         },
-		workSuspended: {
-			type: String,
-			required: [ true, 'please add  work suspended' ]
-		},
-		equipmentWithDrawn: {
-			type: String,
-			required: [ true, 'please add a  equipment with drawn' ]
-		},
+		workSuspended:[],
+		equipmentWithDrawn:[],
 		usersAwareness: {
 			type: Boolean,
 			required: [ true, 'please add aware Supervision' ]
 		},
 	
-		stepToEliHazard:{
-			type: String,
-			required: [ true, 'please add step to eliminate hazard' ]
-        },
-        safetyMeasure: {
-           type: String,
-			required: [ true, 'please add  safety measure' ] 
-        },
+		stepToEliHazard:[],
+        safetyMeasure: [],
 		signature: {
 			type: mongoose.Schema.Types.ObjectId, 
             required: true,

@@ -19,11 +19,7 @@ const workSchema = mongoose.Schema(
 			type: String,
 			required: [ true, 'please add a phone number' ]
 		},
-		desc: {
-			type: String,
-			required: [ true, 'please add an desc' ],
-			unique: true
-		},
+		works: [],
 		startDate: {
 			type: String,
 			required: [ true, 'please add start date' ]
