@@ -3,8 +3,7 @@ const router = express.Router();
 const { getMe, loginUser, registerUser,getUsers,deleteUser,updateUser } = require('../controllers/userControllers');
 const {protect} = require('../middleware/authMiddleware')
 // psot and get method on have same adress
-router.route('/').get(protect, getUsers);
-router.route('/register').post(registerUser)
+router.route('/').get( getUsers).post(registerUser);
 // route for login user (in simple way)
 router.route('/login').post(loginUser);
 

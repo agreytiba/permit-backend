@@ -4,7 +4,7 @@ const Request = require('../../models/requestModel');
 // @desc Delete a permit by ID
 // @route DELETE /api/permit/:id
 // @access private
-const DeletePermit = asyncHandler(async (req, res) => {
+const deletePermit = asyncHandler(async (req, res) => {
     try {
         const { id } = req.params;
 
@@ -25,5 +25,4 @@ const DeletePermit = asyncHandler(async (req, res) => {
     }
 });
 
-module.exports = DeletePermit;
-
+module.exports = deletePermit;

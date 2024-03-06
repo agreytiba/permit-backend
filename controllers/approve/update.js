@@ -1,11 +1,12 @@
 const asyncHandler = require('express-async-handler');
 const Request = require('../../models/requestModel');
 
-const AddReview = asyncHandler(async (req, res) => {
+const AddApprove = asyncHandler(async (req, res) => {
     const { id } = req.params;
-   const reviewedBy = req.body.reviewedBy;
-    const reviewTime = req.body.reviewTime;
-    const reviewDate = req.body.reviewDate;
+
+    const approvedBy = req.body.approvedBy;
+    const approvedTime = req.body.approvedTime;
+    const approvedDate = req.body.approvedDate;
     const failedReasons = req.body.failedReasons;
    
     try {
@@ -16,12 +17,12 @@ const AddReview = asyncHandler(async (req, res) => {
             return res.status(404).json({ message: 'Permit not found' });
         }
 
-        if (permit.isReviewed) {
+        if (permit.isApproved) {
             return res.status(400).json({ message: 'Permit is already reviewed' });
         }
 
-       if (failedReasons) {
-        permit.review.push({ reviewedBy, reviewTime, reviewDate, failedReasons });
+  if (failedReasons) {
+        permit.approve.push({ approvedBy, approvedTime, approvedDate, failedReasons });
         permit.permitStatus = 'Failed';
         permit.isApproved = true;
 
@@ -31,12 +32,11 @@ const AddReview = asyncHandler(async (req, res) => {
         res.status(200).json(updatedPermit);
       
     }
-
         // Update permit status and set isReviewed to true
-        permit.permitStatus = 'Reviewed';
-        permit.isReviewed = true;
-
-  permit.review.push({ reviewedBy, reviewTime, reviewDate});
+        permit.permitStatus = 'Approved';
+        permit.isApproved = true;
+        // Add the approvedBy and approvedTime objects to the review array
+        permit.approve.push({ approvedBy, approvedTime, approvedDate});
 
         // Save the updated permit
         const updatedPermit = await permit.save();
@@ -48,4 +48,4 @@ const AddReview = asyncHandler(async (req, res) => {
     }
 });
 
-module.exports = AddReview;
+module.exports = AddApprove;

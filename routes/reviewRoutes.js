@@ -8,5 +8,5 @@ const AddReview = require('../controllers/reviewController/update');
 router.route('/').get(GetToReview);
 
 //delete user,get single user,updatePermit have same address (in simple way)
-router.route('/:id').delete(protect,deletePermitReview).put(AddReview);
+router.route('/:id').delete(protect,deletePermitReview).post(AddReview);
 module.exports = router;

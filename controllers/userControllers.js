@@ -26,16 +26,14 @@ const getUsers = asyncHandler(async (req, res) => {
 const registerUser = asyncHandler(async (req, res) => {
 	const { firstName,lastName,projectId, email, password, phoneNumber} = req.body;
 	if (!firstName || !lastName || !email || !phoneNumber || !password) {
-		res.status(400);
-		throw new Error('please add all fields');
+		res.status(400).json({message:'please add all fields'});
 	}
 	
 
 	//check if user exists
 	const userExists = await User.findOne({ email });
 	if (userExists) {
-		res.status(400);
-		throw new Error('email already used please use another email');
+		res.status(400).json({ message: 'email already used please use another email' });
 	}
 	// Hash password
 	const salt = await bcrypt.genSalt(10);
@@ -60,10 +58,9 @@ const registerUser = asyncHandler(async (req, res) => {
 		 // Send a verification email to the user's email address
     sendVerificationEmail(email,verificationToken);
 
-    res.status(201).json('User registered. Check your email for verification.' );
+    res.status(200).json('User registered. Check your email for verification.' );
 	} else {
-		res.status(400);
-		throw new Error('invalid user data');
+		res.status(400).json({ message: 'invalid user data' });
 	}
 });
 
